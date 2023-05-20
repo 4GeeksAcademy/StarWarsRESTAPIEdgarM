@@ -1,19 +1,17 @@
 from flask import Flask, jsonify, request
-from models import db, User, People, Planet
+from flask_cors import CORS
+from models import db, User, Character, Planet
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'  # Or the URI of your choice
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db' 
+CORS(app)
 db.init_app(app)
 
-@app.route('/people', methods=['GET'])
-def get_people():
-    all_people = People.query.all()
-    return jsonify([p.name for p in all_people])
+@app.route('/character', methods=['GET'])
+def get_character():
+    all_character = Character.query.all()
+    return jsonify([p.name for p in all_character])
 
-@app.route('/people/<int:people_id>', methods=['GET'])
-def get_person(people_id):
-    person = People.query.get_or_404(people_id)
-    return jsonify(person.name)
 
 @app.route('/planets', methods=['GET'])
 def get_planets():
