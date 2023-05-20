@@ -32,16 +32,16 @@ def get_users():
 def get_user_favorites():
     user = User.query.get_or_404(request.args.get('user_id'))  # Assuming user_id is passed as a query param
     return jsonify({
-        'favorite_people': [p.name for p in user.favorites_people],
+        'favorite_character': [p.name for p in user.favorites_character],
         'favorite_planets': [p.name for p in user.favorites_planets],
     })
 
-@app.route('/favorite/people/<int:people_id>', methods=['POST'])
-def add_favorite_people(people_id):
+@app.route('/favorite/character/<int:character_id>', methods=['POST'])
+def add_favorite_character(character_id):
     user = User.query.get_or_404(request.args.get('user_id'))  # Assuming user_id is passed as a query param
-    person = People.query.get_or_404(people_id)
-    if person not in user.favorites_people:
-        user.favorites_people.append(person)
+    person = Character.query.get_or_404(character_id)
+    if person not in user.favorites_character:
+        user.favorites_character.append(person)
         db.session.commit()
     return jsonify({'message': 'Favorite added.'})
 
@@ -54,12 +54,12 @@ def add_favorite_planet(planet_id):
         db.session.commit()
     return jsonify({'message': 'Favorite added.'})
 
-@app.route('/favorite/people/<int:people_id>', methods=['DELETE'])
-def remove_favorite_people(people_id):
+@app.route('/favorite/character/<int:character_id>', methods=['DELETE'])
+def remove_favorite_character(character_id):
     user = User.query.get_or_404(request.args.get('user_id'))  # Assuming user_id is passed as a query param
-    person = People.query.get_or_404(people_id)
-    if person in user.favorites_people:
-        user.favorites_people.remove(person)
+    person = Character.query.get_or_404(character_id)
+    if person in user.favorites_character:
+        user.favorites_character.remove(person)
         db.session.commit()
     return jsonify({'message': 'Favorite removed.'})
 
